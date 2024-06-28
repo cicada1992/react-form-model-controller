@@ -1,1 +1,4 @@
-packages: -'packages/**' - 'demo/**' - '!**/node_modules/**';
+packages: 
+- 'packages/**' 
+- 'demo/**' 
+- '!**/node_modules/**'
