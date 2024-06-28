@@ -1,0 +1,21 @@
+{
+  "name": "monorepo-for-my-packages",
+  "version": "0.0.0",
+  "description": "A monorepo for my packages",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cicada1992/monorepo-for-my-packages.git"
+  },
+  "license": "ISC",
+  "scripts": {
+    "start:demo:form": "pnpm -F '@demo/react-model-base-form' dev",
+    "build:pack:form": "pnpm -F 'react-model-base-form' build",
+    "publish:pack:form": "pnpm -F 'react-model-base-form' publish",
+    "flush": "sh flush.sh",
+    "prettier": "prettier --write '**/*.{ts,js,jsx,tsx}'"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.2"
+  }
+}
