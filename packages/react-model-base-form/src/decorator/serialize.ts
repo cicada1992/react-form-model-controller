@@ -1,4 +1,4 @@
-import DecoratorUtils, { ClassConstructor } from './decorators';
+import DecoratorUtils, { ClassConstructor } from './utils';
 
 // TODO: find type inference method
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

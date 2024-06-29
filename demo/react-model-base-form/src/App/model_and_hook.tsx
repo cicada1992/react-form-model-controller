@@ -1,6 +1,6 @@
 import { BaseFormController, formHookCreator, Serialize } from 'react-model-base-form';
 
-interface WriteResultOne {
+interface WriteResult {
   type1: string;
   amount2: number;
   here: boolean;
@@ -9,13 +9,13 @@ interface WriteResultOne {
 /** --------------------------------------------------- ONE ----------------------------------------------------- */
 
 class FormOneModel {
-  @Serialize<WriteResultOne>((v: string) => ({ type1: `serialized=${v}` }))
+  @Serialize<WriteResult>((v: string) => ({ type1: `serialized=${v}` }))
   name: string = '';
-  @Serialize<WriteResultOne>((v: string) => ({ amount2: Number(v), here: false }))
+  @Serialize<WriteResult>((v: string) => ({ amount2: Number(v), here: false }))
   type: string[] = [];
 }
 
-class FormOneController extends BaseFormController<FormOneModel, WriteResultOne> {}
+class FormOneController extends BaseFormController<FormOneModel, WriteResult> { }
 
 export const useFormOne = formHookCreator({
   FormModel: FormOneModel,

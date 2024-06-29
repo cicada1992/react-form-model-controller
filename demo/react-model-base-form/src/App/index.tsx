@@ -3,6 +3,8 @@ import { useFormOne } from './model_and_hook';
 
 const App: React.FC = () => {
   const { Field, controller } = useFormOne();
+  const store = controller.useStore()
+
   return (
     <Row style={{ paddingTop: 100, paddingInline: 20 }}>
       <Field name="name">
@@ -21,7 +23,9 @@ const App: React.FC = () => {
           </>
         )}
       </Field>
+      <Input value={store.values['name']} onChange={(e) => controller.setValue('name', e.target.value)} />
       <Button onClick={send}>Send</Button>
+      <Button onClick={controller.undo}>undo</Button>
     </Row>
   );
 

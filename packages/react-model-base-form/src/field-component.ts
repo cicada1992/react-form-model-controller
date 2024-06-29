@@ -1,6 +1,7 @@
 import isEqual from 'lodash.isequal';
 import { BaseFormController } from './controller';
 import { extractValueFrom } from './utils';
+import memoizeOne from 'memoize-one';
 
 interface FieldRenderProps<TFormModel, TValue> {
   value: TValue;
@@ -20,7 +21,7 @@ export interface FieldExternalProps<TFormModel, TKey extends keyof TFormModel> {
   children: FieldRenderFunc<TFormModel, TKey>;
 }
 
-export const createFieldComponent = <
+export const createFieldComponent = memoizeOne(<
   TFormController extends BaseFormController<TFormController['model']>,
   TKey extends keyof TFormController['model'],
 >(
@@ -31,12 +32,12 @@ export const createFieldComponent = <
     const mapOfNodeCache: Partial<Record<TKey, React.ReactNode>> = {};
 
     return ({ name: fieldName, children }) => {
-      const { store } = controller;
+      const store = controller.useStore();
       const value = store.values[fieldName];
 
       if (!isEqual(mapOfCachedValue[fieldName], value) || !mapOfNodeCache[fieldName]) {
         const fieldHanlder = (value: unknown) => {
-          const extractedValue = extractValueFrom(value) as TFormController['model'][keyof TFormController['model']];
+          const extractedValue = extractValueFrom(value) as TFormController['model'][TKey];
           controller.setValue(fieldName, extractedValue);
         };
 
@@ -55,4 +56,4 @@ export const createFieldComponent = <
       return mapOfNodeCache[fieldName];
     };
   }
-};
+});
