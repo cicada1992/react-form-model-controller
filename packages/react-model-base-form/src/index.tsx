@@ -4,4 +4,4 @@ export * from './field-component';
 export * from './types';
 export * from './utils';
 
-export { Serialize } from './decorator/serialize';
+export { Mapper } from './decorator/mapper';

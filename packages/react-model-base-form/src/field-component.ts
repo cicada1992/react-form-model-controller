@@ -21,39 +21,38 @@ export interface FieldExternalProps<TFormModel, TKey extends keyof TFormModel> {
   children: FieldRenderFunc<TFormModel, TKey>;
 }
 
-export const createFieldComponent = memoizeOne(<
-  TFormController extends BaseFormController<TFormController['model']>,
-  TKey extends keyof TFormController['model'],
->(
-  controller: TFormController,
-): ((props: FieldExternalProps<TFormController['model'], TKey>) => React.ReactNode | React.ReactNode[]) => {
-  {
-    const mapOfCachedValue: Partial<Record<TKey, TFormController['model'][TKey]>> = {};
-    const mapOfNodeCache: Partial<Record<TKey, React.ReactNode>> = {};
+export const createFieldComponent = memoizeOne(
+  <TFormController extends BaseFormController<TFormController['model']>, TKey extends keyof TFormController['model']>(
+    controller: TFormController,
+  ): ((props: FieldExternalProps<TFormController['model'], TKey>) => React.ReactNode | React.ReactNode[]) => {
+    {
+      const mapOfCachedValue: Partial<Record<TKey, TFormController['model'][TKey]>> = {};
+      const mapOfNodeCache: Partial<Record<TKey, React.ReactNode>> = {};
 
-    return ({ name: fieldName, children }) => {
-      const store = controller.useStore();
-      const value = store.values[fieldName];
+      return ({ name: fieldName, children }) => {
+        const store = controller.useStore();
+        const value = store.values[fieldName];
 
-      if (!isEqual(mapOfCachedValue[fieldName], value) || !mapOfNodeCache[fieldName]) {
-        const fieldHanlder = (value: unknown) => {
-          const extractedValue = extractValueFrom(value) as TFormController['model'][TKey];
-          controller.setValue(fieldName, extractedValue);
-        };
+        if (!isEqual(mapOfCachedValue[fieldName], value) || !mapOfNodeCache[fieldName]) {
+          const fieldHanlder = (value: unknown) => {
+            const extractedValue = extractValueFrom(value) as TFormController['model'][TKey];
+            controller.setValue(fieldName, extractedValue);
+          };
 
-        const node = children({
-          value,
-          values: store.values,
-          error: '',
-          fieldHanlder,
-        });
+          const node = children({
+            value,
+            values: store.values,
+            error: '',
+            fieldHanlder,
+          });
 
-        mapOfCachedValue[fieldName] = value;
-        mapOfNodeCache[fieldName] = node;
-        return node;
-      }
+          mapOfCachedValue[fieldName] = value;
+          mapOfNodeCache[fieldName] = node;
+          return node;
+        }
 
-      return mapOfNodeCache[fieldName];
-    };
-  }
-});
+        return mapOfNodeCache[fieldName];
+      };
+    }
+  },
+);

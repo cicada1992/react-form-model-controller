@@ -1,4 +1,9 @@
-:root {
+html, body {
+  height: 100%;
+}
+
+#root {
+  min-height: 100%;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;

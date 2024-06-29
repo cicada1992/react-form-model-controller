@@ -1,14 +1,17 @@
-import { BaseFormController, formHookCreator, Mapper } from 'react-model-base-form';
+import { BaseFormController } from '../controller';
+import { Mapper } from '../decorator/mapper';
+import { formHookCreator } from '../hook-creator';
 
-export interface ReadResponse {
+interface ReadResponse {
   name: string;
   types: string;
+  here: boolean;
 }
 
 interface WriteResult {
   name: string;
   types: string;
-  hasType: boolean;
+  here: boolean;
 }
 
 class FormOneModel {

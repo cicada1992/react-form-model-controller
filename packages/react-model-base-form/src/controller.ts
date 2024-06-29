@@ -1,11 +1,12 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 
 import DecoratorUtils from './decorator/utils';
-import { SerializeMetadata } from './decorator/serialize';
+import { MapperMetadata } from './decorator/mapper';
 import { BaseFormState } from './types';
+import deepmerge from 'deepmerge';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export abstract class BaseFormController<TFormModel, TWriteResult = Record<string, any>> {
+export abstract class BaseFormController<TFormModel, TWriteResult = any> {
   private snapshots: TFormModel[];
 
   constructor(
@@ -48,25 +49,37 @@ export abstract class BaseFormController<TFormModel, TWriteResult = Record<strin
   }
 
   /** from server */
-  read() {
-    console.log('read!');
+  read<TDataResponse>(data: TDataResponse extends object ? TDataResponse : never): void {
+    let result = JSON.parse(JSON.stringify(this.model)) as TFormModel;
+    const serializeMetadata = DecoratorUtils.getOrCreateClassMetadata(this.ModelClass, MapperMetadata);
+    const fieldNames = this.getFieldNames();
+    fieldNames.forEach((fieldName) => {
+      if (typeof fieldName !== 'string') return;
+      const reader = serializeMetadata.getReader(fieldName);
+      if (reader) result = deepmerge(result, reader(data));
+    });
+
+    this.setValues(result);
   }
 
   /** to server */
   write(): TWriteResult {
     let result = {} as TWriteResult;
-    const serializeMetadata = DecoratorUtils.getOrCreateClassMetadata(this.ModelClass, SerializeMetadata);
-    const fieldNames = Object.getOwnPropertyNames(this.model) as Array<keyof TFormModel>;
+    const serializeMetadata = DecoratorUtils.getOrCreateClassMetadata(this.ModelClass, MapperMetadata);
+    const fieldNames = this.getFieldNames();
     fieldNames.forEach((fieldName) => {
       if (typeof fieldName !== 'string') return;
-      const serializer = serializeMetadata.getSerializer(fieldName);
+      const writer = serializeMetadata.getWriter(fieldName);
       const value = this.model[fieldName as keyof TFormModel];
 
-      // TODO: apply deep merge
-      if (serializer) result = { ...result, ...serializer(value) };
+      if (writer) result = deepmerge(result, writer(value));
     });
 
     return result;
+  }
+
+  private getFieldNames<TKey extends keyof TFormModel>(): TKey[] {
+    return Object.getOwnPropertyNames(this.model) as TKey[];
   }
 
   private takeModelSnapshot() {
