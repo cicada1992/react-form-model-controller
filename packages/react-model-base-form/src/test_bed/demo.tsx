@@ -34,6 +34,7 @@ const App: React.FC = () => {
         <button onClick={read}>Get Data</button>
         <button onClick={write}>Send Data</button>
         <button onClick={controller.undo}>undo</button>
+        <button onClick={controller.reset}>reset</button>
       </div>
     </section>
   );

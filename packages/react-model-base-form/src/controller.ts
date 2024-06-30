@@ -9,24 +9,26 @@ import isEqual from 'lodash.isequal';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class BaseFormController<TFormModel, TWriteResult = any> {
-  private readonly snapshots: TFormModel[];
+  private readonly snapshots: TFormModel[] = [];
   private readonly fieldValidators: FieldValidators<TFormModel, keyof TFormModel> = {};
 
   constructor(
     private ModelClass: new () => TFormModel,
     private storeCreator: UseBoundStore<StoreApi<BaseFormState<TFormModel>>>,
   ) {
-    this.snapshots = [];
-
+    // FORMS
     this.setValue = this.setValue.bind(this);
     this.setValues = this.setValues.bind(this);
     this.validate = this.validate.bind(this);
     this.validateAll = this.validateAll.bind(this);
     this.undo = this.undo.bind(this);
+    this.reset = this.reset.bind(this);
 
+    // HELPER
     this.registerFieldValidator = this.registerFieldValidator.bind(this);
     this.unregisterFieldValidator = this.unregisterFieldValidator.bind(this);
 
+    // API
     this.read = this.read.bind(this);
     this.write = this.write.bind(this);
   }
@@ -83,6 +85,12 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     const target = this.snapshots.pop();
     if (!target) return;
     this.setValues(target);
+  }
+
+  reset() {
+    const initialState = this.storeCreator.getInitialState();
+    console.log({ initialState, aa: { ...initialState } });
+    this.storeCreator.setState(() => initialState);
   }
 
   /** from server */
