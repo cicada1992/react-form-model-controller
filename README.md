@@ -1,4 +1,4 @@
-# A mono repo for packages (NPM, ETC)
+# A mono repo for packages and it's demo (NPM, ETC)
 
 ## Description
 - A mono repo for packages. (NPM, ETC) 
