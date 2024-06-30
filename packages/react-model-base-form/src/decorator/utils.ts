@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type ClassConstructor = Function;
-export type GlobalMap = Map<ClassConstructor, MetadataMap>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MetadataMap<T = any> = Map<ClassConstructor, T>;
+import { ClassConstructor, GlobalMap } from '../types';
 
+/* eslint-disable @typescript-eslint/no-namespace */
 namespace DecoratorUtils {
   const globalMetadataMap: GlobalMap = new Map();
 

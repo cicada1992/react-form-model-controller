@@ -1,24 +1,11 @@
-import { StoreApi, UseBoundStore, create } from 'zustand';
+import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-import { BaseFormController } from './controller';
-import { createFieldComponent, FieldExternalProps } from './field-component';
-import { BaseFormState } from './types';
-
-type FieldHook<TFormModel> = <TKey extends keyof TFormModel>(
-  props: FieldExternalProps<TFormModel, TKey>,
-) => React.ReactNode | React.ReactNode[];
-
-interface FormHookCreatorCtx<TFormModel> {
-  FormModel: new () => TFormModel;
-  FormController: new (
-    model: new () => TFormModel,
-    store: UseBoundStore<StoreApi<BaseFormState<TFormModel>>>,
-  ) => BaseFormController<TFormModel>;
-}
+import { createFieldComponent } from './field-component';
+import { BaseFormState, FieldHook, FormHookCreatorCtx } from './types';
 
 /**
- * [TODO] find better abstraction
+ * [TODO] find better abstraction for user's right to choose store.
  * current: zustand store
  */
 const createFormStore = <TFormModel>(ModelClass: new () => TFormModel) =>

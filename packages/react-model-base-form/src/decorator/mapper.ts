@@ -1,10 +1,5 @@
-import DecoratorUtils, { ClassConstructor } from './utils';
-
-// TODO: find type inference method
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Reader<TDataResponse = any, TFormModel = object> = (v: TDataResponse) => Partial<TFormModel>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Writer<TValue = any, TResult = object> = (v: TValue) => Partial<TResult>;
+import { ClassConstructor, Reader, Writer } from '../types';
+import DecoratorUtils from './utils';
 
 const MapperReader = <TDataResponse, TFormModel>(reader: Reader<TDataResponse, TFormModel>) => {
   const callback = (target: ClassConstructor, propertyKey: string) => {

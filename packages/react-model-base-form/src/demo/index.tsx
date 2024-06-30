@@ -7,22 +7,22 @@ const App: React.FC = () => {
   return (
     <div style={{ paddingTop: 100, paddingInline: 20 }}>
       <Field name="name">
-        {({ value, fieldHanlder }) => (
+        {({ value, fieldHandler }) => (
           <>
             <label>type</label>
-            <input value={value} onChange={fieldHanlder} />
+            <input value={value} onChange={fieldHandler} />
           </>
         )}
       </Field>
       <Field name="type">
-        {({ value, fieldHanlder }) => (
+        {({ value, fieldHandler }) => (
           <>
             <label>amount</label>
-            <input value={value} onChange={fieldHanlder} />
+            <input value={value} onChange={fieldHandler} />
+            <input value={store.values['name']} onChange={(e) => controller.setValue('name', e.target.value)} />
           </>
         )}
       </Field>
-      <input value={store.values['name']} onChange={(e) => controller.setValue('name', e.target.value)} />
       <button onClick={send}>Send</button>
     </div>
   );

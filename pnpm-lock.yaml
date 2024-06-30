@@ -72,9 +72,15 @@ importers:
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
+      lodash.clone:
+        specifier: ^4.5.0
+        version: 4.5.0
       lodash.isequal:
         specifier: ^4.5.0
         version: 4.5.0
+      lodash.setwith:
+        specifier: ^4.3.2
+        version: 4.3.2
       memoize-one:
         specifier: ^6.0.0
         version: 6.0.0
@@ -88,9 +94,15 @@ importers:
         specifier: ^4.5.4
         version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
     devDependencies:
+      '@types/lodash.clone':
+        specifier: ^4.5.9
+        version: 4.5.9
       '@types/lodash.isequal':
         specifier: ^4.5.8
         version: 4.5.8
+      '@types/lodash.setwith':
+        specifier: ^4.3.9
+        version: 4.3.9
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.3
@@ -1247,8 +1259,20 @@ packages:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
 
+  /@types/lodash.clone@4.5.9:
+    resolution: {integrity: sha512-euFSUq+8csIliszqTBSMh7eU41/by1JPQhTNa2gq3dncxC2Z6s87bbzVB9UUBdYDbV+FV5whFDGxz6hOKTY/EQ==}
+    dependencies:
+      '@types/lodash': 4.17.6
+    dev: true
+
   /@types/lodash.isequal@4.5.8:
     resolution: {integrity: sha512-uput6pg4E/tj2LGxCZo9+y27JNyB2OZuuI/T5F+ylVDYuqICLG2/ktjxx0v6GvVntAf8TvEzeQLcV0ffRirXuA==}
+    dependencies:
+      '@types/lodash': 4.17.6
+    dev: true
+
+  /@types/lodash.setwith@4.3.9:
+    resolution: {integrity: sha512-OQIdB68rvZH6imlOrdVl2svq7mtTSsRaZhDTWIi4vF8TC/ZGMF8FYum9A6Sfa320ACzvqScvpc/7yjjI3iPDHg==}
     dependencies:
       '@types/lodash': 4.17.6
     dev: true
@@ -2274,6 +2298,10 @@ packages:
       p-locate: 5.0.0
     dev: true
 
+  /lodash.clone@4.5.0:
+    resolution: {integrity: sha512-GhrVeweiTD6uTmmn5hV/lzgCQhccwReIVRLHp7LT4SopOjqEZ5BbX8b5WWEtAKasjmy8hR7ZPwsYlxRCku5odg==}
+    dev: false
+
   /lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: true
@@ -2284,6 +2312,10 @@ packages:
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
+
+  /lodash.setwith@4.3.2:
+    resolution: {integrity: sha512-Cv2pndcuNDaqDMJ0gbLm5qNG5jyfsL6f8+f5PfZVVNhQCv+y+P5gAKkCdZbtiQlux7nsnWF7UmZd8JEFIo/4tg==}
+    dev: false
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}

@@ -4,57 +4,54 @@ import DUMMY_API from './api';
 
 const App: React.FC = () => {
   const { Field, controller } = useFormOne();
-  const store = controller.useStore();
 
   return (
     <Card style={{ width: '100vw' }}>
       <Row style={{ paddingTop: 20 }}>
         <Field name="name">
-          {({ value, fieldHanlder }) => (
+          {({ value, fieldHandler }) => (
             <>
               <label>name</label>
-              <Input value={value} onChange={fieldHanlder} />
+              <Input value={value} onChange={fieldHandler} />
             </>
           )}
         </Field>
       </Row>
       <Row style={{ paddingTop: 20 }}>
         <Field name="type">
-          {({ value, fieldHanlder }) => (
+          {({ value, values, fieldHandler, getFieldHandler }) => (
             <>
               <label>selected type</label>
               <Checkbox
                 value="a"
                 checked={value.includes('a')}
-                onChange={(e) => fieldHanlder(getNextTypes(value, e.target.value))}
+                onChange={(e) => {
+                  const nextValue = getNextTypes(value, e.target.value);
+                  fieldHandler(nextValue)
+                  getFieldHandler('hasType')(Boolean(nextValue.length))
+                }}
               >
                 A
               </Checkbox>
               <Checkbox
                 value="b"
                 checked={value.includes('b')}
-                onChange={(e) => fieldHanlder(getNextTypes(value, e.target.value))}
+                onChange={(e) => {
+                  const nextValue = getNextTypes(value, e.target.value);
+                  fieldHandler(nextValue)
+                  getFieldHandler('hasType')(Boolean(nextValue.length))
+                }}
               >
                 B
               </Checkbox>
-              <Checkbox
-                value="c"
-                checked={value.includes('c')}
-                onChange={(e) => fieldHanlder(getNextTypes(value, e.target.value))}
-              >
-                C
-              </Checkbox>
+              <label>Has Selected Type</label>
+              <Switch
+                value={values.hasType}
+                disabled
+              />
             </>
           )}
         </Field>
-      </Row>
-      <Row style={{ paddingTop: 20 }}>
-        <label>Has Selected Type</label>
-        <Switch
-          value={store.values['hasType']}
-          disabled
-          onChange={(checked) => controller.setValue('hasType', checked)}
-        />
       </Row>
       <Row style={{ paddingTop: 20 }}>
         <Button onClick={read}>Get Data</Button>
@@ -75,7 +72,7 @@ const App: React.FC = () => {
   }
 
   function getNextTypes(types: string[], value: string) {
-    return types.includes(value) ? types.filter((v) => v !== value) : [...types, value];
+    return types.includes(value) ? types.filter(type => type !== value) : [...types, value];
   }
 };
 

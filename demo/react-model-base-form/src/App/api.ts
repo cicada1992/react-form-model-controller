@@ -7,7 +7,7 @@ const DUMMY_API = {
         () =>
           res({
             name: 'initial name',
-            types: 'a,b,c',
+            types: 'a,b',
           }),
         1000,
       ),

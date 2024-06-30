@@ -2,57 +2,58 @@ import isEqual from 'lodash.isequal';
 import { BaseFormController } from './controller';
 import { extractValueFrom } from './utils';
 import memoizeOne from 'memoize-one';
-
-interface FieldRenderProps<TFormModel, TValue> {
-  value: TValue;
-  values: TFormModel;
-  error: string | null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  fieldHanlder: (value: any) => void; // value에 event가 올수도 있기에 any 처리 (extractValueFrom util 함수에서 처리해줌)
-}
-
-type FieldRenderFunc<TFormModel, TKey extends keyof TFormModel> = (
-  props: FieldRenderProps<TFormModel, TFormModel[TKey]>,
-) => React.ReactNode;
-
-export interface FieldExternalProps<TFormModel, TKey extends keyof TFormModel> {
-  name: TKey;
-  refValues?: Array<keyof TFormModel>;
-  children: FieldRenderFunc<TFormModel, TKey>;
-}
+import setWith from 'lodash.setwith';
+import clone from 'lodash.clone';
+import { FieldHanlders, FieldProps } from './types';
 
 export const createFieldComponent = memoizeOne(
   <TFormController extends BaseFormController<TFormController['model']>, TKey extends keyof TFormController['model']>(
     controller: TFormController,
-  ): ((props: FieldExternalProps<TFormController['model'], TKey>) => React.ReactNode | React.ReactNode[]) => {
+  ): ((props: FieldProps<TFormController['model'], TKey>) => React.ReactNode | React.ReactNode[]) => {
     {
       const mapOfCachedValue: Partial<Record<TKey, TFormController['model'][TKey]>> = {};
       const mapOfNodeCache: Partial<Record<TKey, React.ReactNode>> = {};
 
-      return ({ name: fieldName, children }) => {
+      return ({ name: key, children }) => {
         const store = controller.useStore();
-        const value = store.values[fieldName];
+        const value = store.values[key];
 
-        if (!isEqual(mapOfCachedValue[fieldName], value) || !mapOfNodeCache[fieldName]) {
-          const fieldHanlder = (value: unknown) => {
-            const extractedValue = extractValueFrom(value) as TFormController['model'][TKey];
-            controller.setValue(fieldName, extractedValue);
-          };
-
+        if (!isEqual(mapOfCachedValue[key], value) || !mapOfNodeCache[key]) {
           const node = children({
             value,
             values: store.values,
             error: '',
-            fieldHanlder,
+            ...getFieldHandlers(controller, key, store.values),
           });
 
-          mapOfCachedValue[fieldName] = value;
-          mapOfNodeCache[fieldName] = node;
+          mapOfCachedValue[key] = value;
+          mapOfNodeCache[key] = node;
           return node;
         }
 
-        return mapOfNodeCache[fieldName];
+        return mapOfNodeCache[key];
       };
     }
   },
 );
+
+const getFieldHandlers = <
+  TFormController extends BaseFormController<TFormController['model']>,
+  TKey extends keyof TFormController['model'],
+>(
+  controller: TFormController,
+  key: TKey,
+  values: TFormController['model'],
+): FieldHanlders<TFormController['model'], TFormController['model'][TKey]> => {
+  return {
+    fieldHandler: (value) => controller.setValue(key, extractValueFrom(value)),
+    getFieldHandler:
+      <TKey extends keyof TFormController['model']>(input: TKey) =>
+        (value) =>
+          controller.setValue(input, extractValueFrom(value)),
+    getComplexFieldHandler: (path: string) => (value: unknown) => {
+      const nextValues = setWith(clone(values as object), path, value, clone);
+      controller.setValues(nextValues);
+    },
+  };
+};

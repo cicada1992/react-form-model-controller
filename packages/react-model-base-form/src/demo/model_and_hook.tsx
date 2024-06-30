@@ -27,7 +27,7 @@ class FormOneModel {
   hasType: boolean = false;
 }
 
-class FormOneController extends BaseFormController<FormOneModel, WriteResult> { }
+class FormOneController extends BaseFormController<FormOneModel, WriteResult> {}
 
 export const useFormOne = formHookCreator({
   FormModel: FormOneModel,
