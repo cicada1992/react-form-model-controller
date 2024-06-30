@@ -20,7 +20,7 @@ const App: React.FC = () => {
         </Field>
       </Row>
       <div>
-        <Field name="type" validator={validateType}>
+        <Field name="type" validator={validateType} refValues={['hasType']}>
           {({ value, error, values, fieldHandler, getFieldHandler }) => (
             <>
               <Row style={{ marginTop: 20 }}>
@@ -30,8 +30,8 @@ const App: React.FC = () => {
                   checked={value.includes('a')}
                   onChange={(e) => {
                     const nextValue = getNextTypes(value, e.target.value);
-                    fieldHandler(nextValue)
-                    getFieldHandler('hasType')(Boolean(nextValue.length))
+                    fieldHandler(nextValue);
+                    getFieldHandler('hasType')(Boolean(nextValue.length));
                   }}
                 >
                   A
@@ -41,8 +41,8 @@ const App: React.FC = () => {
                   checked={value.includes('b')}
                   onChange={(e) => {
                     const nextValue = getNextTypes(value, e.target.value);
-                    fieldHandler(nextValue)
-                    getFieldHandler('hasType')(Boolean(nextValue.length))
+                    fieldHandler(nextValue);
+                    getFieldHandler('hasType')(Boolean(nextValue.length));
                   }}
                 >
                   B
@@ -51,10 +51,7 @@ const App: React.FC = () => {
               {error && <div style={{ color: 'red' }}>{error}</div>}
               <Row style={{ marginTop: 20 }}>
                 <label>Has Selected Type</label>
-                <Switch
-                  value={values.hasType}
-                  disabled
-                />
+                <Switch value={values.hasType} disabled />
               </Row>
             </>
           )}
@@ -79,7 +76,7 @@ const App: React.FC = () => {
   }
 
   function getNextTypes(types: string[], value: string) {
-    return types.includes(value) ? types.filter(type => type !== value) : [...types, value];
+    return types.includes(value) ? types.filter((type) => type !== value) : [...types, value];
   }
 };
 

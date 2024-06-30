@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [react(), dts({})],
+  plugins: [react({ tsDecorators: true }), dts({})],
   build: {
     lib: {
       entry: './src/index.tsx',

@@ -1,60 +1,60 @@
-import isEqual from 'lodash.isequal';
+// import isEqual from 'lodash.isequal';
 import { BaseFormController } from './controller';
 import { extractValueFrom } from './utils';
 import memoizeOne from 'memoize-one';
 import setWith from 'lodash.setwith';
 import clone from 'lodash.clone';
-import { FieldHanlders, FieldProps, FieldValidator } from './types';
+import { FieldErrors, FieldHanlders, FieldProps, FieldValidator } from './types';
 import { useEffect, useRef } from 'react';
+import pick from 'lodash.pick';
+import isEqual from 'lodash.isequal';
 
 export const createFieldComponent = memoizeOne(
   <TFormController extends BaseFormController<TFormController['model']>, TKey extends keyof TFormController['model']>(
     controller: TFormController,
   ): ((props: FieldProps<TFormController['model'], TKey>) => React.ReactNode | React.ReactNode[]) => {
-    {
-      const mapOfCachedValue: Partial<Record<TKey, TFormController['model'][TKey]>> = {};
-      const mapOfNodeCache: Partial<Record<TKey, React.ReactNode>> = {};
+    const mapOfCachedValues: { [P in TKey]?: Partial<TFormController['model']> } = {};
+    const mapOfCachedErrors: { [P in TKey]?: Partial<FieldErrors<TFormController['model']>> } = {};
 
-      return ({ name: key, validator, validateOnMount, children }) => {
-        const isValidatorRegistered = useRef<boolean>();
-        const store = controller.useStore();
-        const value = store.values[key];
-        const values = store.values;
+    return ({ name: key, refValues, validator, validateOnMount, children }) => {
+      const isValidatorRegistered = useRef<boolean>();
+      const store = controller.useTargetStore(key, refValues);
 
+      useEffect(() => {
+        if (!validator) return;
+        registerValidator(validator);
+        if (validateOnMount) controller.validate(key);
+        () => registerValidator(null);
+      }, []);
 
-        useEffect(() => {
-          if (!validator) return;
-          registerValidator(validator);
-          if (validateOnMount) controller.validate(key);
-          () => registerValidator(null);
-        }, []);
-
-        const registerValidator = (validator: FieldValidator<TFormController['model'], TKey> | null) => {
-          if (validator) {
-            if (isValidatorRegistered.current) return;
-            controller.registerFieldValidator(key, validator);
-            isValidatorRegistered.current = true;
-            return;
-          };
-          controller.unregisterFieldValidator(key);
-        };
-
-        if (!isEqual(mapOfCachedValue[key], value) || !mapOfNodeCache[key]) {
-          const node = children({
-            value,
-            values,
-            error: store.errors[key],
-            ...getFieldHandlers(controller, key, values),
-          });
-
-          mapOfCachedValue[key] = value;
-          mapOfNodeCache[key] = node;
-          return node;
+      const registerValidator = (validator: FieldValidator<TFormController['model'], TKey> | null) => {
+        if (validator) {
+          if (isValidatorRegistered.current) return;
+          controller.registerFieldValidator(key, validator);
+          isValidatorRegistered.current = true;
+          return;
         }
-
-        return mapOfNodeCache[key];
+        controller.unregisterFieldValidator(key);
       };
-    }
+
+      const newValues = refValues ? pick(store.values, refValues) : {};
+      const cachedValues = mapOfCachedValues[key];
+      const values = isEqual(cachedValues, newValues) ? cachedValues : newValues;
+      mapOfCachedValues[key] = values;
+
+      const newErrors = refValues ? pick(store.errors, refValues) : {};
+      const cachedErrors = mapOfCachedErrors[key];
+      const errors = isEqual(cachedErrors, newErrors) ? cachedErrors : newErrors;
+      mapOfCachedErrors[key] = errors;
+
+      return children({
+        value: store.value,
+        error: store.error,
+        values: mapOfCachedValues[key] || {},
+        errors: mapOfCachedErrors[key] || {},
+        ...getFieldHandlers(controller, key, values),
+      });
+    };
   },
 );
 

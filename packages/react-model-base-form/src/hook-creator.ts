@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
 
 import { createFieldComponent } from './field-component';
 import { BaseFormState, FieldHook, FormHookCreatorCtx } from './types';
@@ -9,14 +8,12 @@ import { BaseFormState, FieldHook, FormHookCreatorCtx } from './types';
  * current: zustand store
  */
 const createFormStore = <TFormModel>(ModelClass: new () => TFormModel) =>
-  create<BaseFormState<TFormModel>>()(
-    devtools(() => {
-      return {
-        values: new ModelClass(),
-        errors: {},
-      };
-    }),
-  );
+  create<BaseFormState<TFormModel>>(() => {
+    return {
+      values: new ModelClass(),
+      errors: {},
+    };
+  });
 
 export const formHookCreator = <TFormModel>({ FormModel, FormController }: FormHookCreatorCtx<TFormModel>) => {
   const store = createFormStore(FormModel);

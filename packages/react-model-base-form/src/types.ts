@@ -10,10 +10,15 @@ export type GlobalMap = Map<ClassConstructor, MetadataMap>;
 export type MetadataMap<T = any> = Map<ClassConstructor, T>;
 
 // FORMS
-export type FieldValue<TFormModel, TKey extends keyof TFormModel> = Record<TKey, TFormModel[TKey]>;
 export type FieldError = string | null | undefined;
-export type FieldValidator<TFormModel, TKey extends keyof TFormModel> = (value: TFormModel[TKey], values: TFormModel) => FieldError;
-export type FieldValidators<TFormModel, TKey extends keyof TFormModel> = { [p in TKey]?: FieldValidator<TFormModel, TKey> };
+export type FieldErrors<TFormModel> = Record<keyof TFormModel, FieldError>;
+export type FieldValidator<TFormModel, TKey extends keyof TFormModel> = (
+  value: TFormModel[TKey],
+  values: TFormModel,
+) => FieldError;
+export type FieldValidators<TFormModel, TKey extends keyof TFormModel> = {
+  [p in TKey]?: FieldValidator<TFormModel, TKey>;
+};
 
 // STORE
 export interface BaseFormState<TFormModel> {
@@ -30,8 +35,9 @@ export interface FieldHanlders<TFormModel, TValue> {
 
 export interface FieldRenderProps<TFormModel, TValue> extends FieldHanlders<TFormModel, TValue> {
   value: TValue;
-  values: TFormModel;
+  values: Partial<TFormModel>;
   error: FieldError;
+  errors: Partial<FieldErrors<TFormModel>>;
 }
 
 export type FieldRenderFunc<TFormModel, TKey extends keyof TFormModel> = (

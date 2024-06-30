@@ -2,29 +2,23 @@ import { BaseFormController } from '../controller';
 import { Mapper } from '../decorator/mapper';
 import { formHookCreator } from '../hook-creator';
 
-interface ReadResponse {
+export interface ReadResponse {
   name: string;
   types: string;
-  here: boolean;
 }
 
 interface WriteResult {
   name: string;
-  types: string;
-  here: boolean;
+  hobby: string;
 }
 
 class FormOneModel {
   @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ name: data.name }))
-  @Mapper.Write<FormOneModel['name'], WriteResult>((v) => ({ name: `serialized!=${v}` }))
+  @Mapper.Write<FormOneModel['name'], WriteResult>((v) => ({ name: `name=${v}` }))
   name: string = '';
 
-  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ type: data.types.split(',') }))
-  @Mapper.Write<FormOneModel['type'], WriteResult>((v) => ({ types: v.join(',') }))
-  type: string[] = [];
-
-  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ hasType: Boolean(data.types.split(',').length) }))
-  hasType: boolean = false;
+  @Mapper.Write<FormOneModel['hobby'], WriteResult>((v) => ({ hobby: `hobby=${v}` }))
+  hobby: string = '';
 }
 
 class FormOneController extends BaseFormController<FormOneModel, WriteResult> {}

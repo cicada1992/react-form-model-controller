@@ -4,6 +4,8 @@ import DecoratorUtils from './decorator/utils';
 import { MapperMetadata } from './decorator/mapper';
 import { BaseFormState, FieldValidator, FieldValidators } from './types';
 import deepmerge from 'deepmerge';
+import pick from 'lodash.pick';
+import isEqual from 'lodash.isequal';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class BaseFormController<TFormModel, TWriteResult = any> {
@@ -28,9 +30,17 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     this.write = this.write.bind(this);
   }
 
-  /** hook interface for being used in component */
-  useStore(): BaseFormState<TFormModel> {
-    return this.storeCreator();
+  /** hook interface for being used in field-component (using selector for render-optimization) */
+  useTargetStore<TKey extends keyof TFormModel>(key: TKey, refValues: Array<keyof TFormModel> = []) {
+    return this.storeCreator(
+      (state) => ({
+        value: state.values[key],
+        error: state.errors[key],
+        values: pick(state.values, refValues),
+        errors: pick(state.errors, refValues),
+      }),
+      isEqual,
+    );
   }
 
   /** get data interface for everywhere */
@@ -102,7 +112,7 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
       console.warn('Failed to register field validator, already have registered one');
       return false;
     }
-    this.fieldValidators[key] = validator as any;
+    this.fieldValidators[key] = validator as FieldValidator<TFormModel, keyof TFormModel>;
     return true;
   }
 
