@@ -13,7 +13,7 @@ export type MetadataMap<T = any> = Map<ClassConstructor, T>;
 export type FieldValue<TFormModel, TKey extends keyof TFormModel> = Record<TKey, TFormModel[TKey]>;
 export type FieldError = string | null | undefined;
 export type FieldValidator<TFormModel, TKey extends keyof TFormModel> = (value: TFormModel[TKey], values: TFormModel) => FieldError;
-export type FieldValidators<TFormModel> = Record<keyof TFormModel, FieldValidator<TFormModel, keyof TFormModel>>;
+export type FieldValidators<TFormModel, TKey extends keyof TFormModel> = { [p in TKey]?: FieldValidator<TFormModel, TKey> };
 
 // STORE
 export interface BaseFormState<TFormModel> {

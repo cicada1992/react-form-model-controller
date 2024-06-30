@@ -1,4 +1,5 @@
 import { useFormOne } from './model_and_hook';
+import { validateName } from './validator';
 
 const App: React.FC = () => {
   const { Field, controller } = useFormOne();
@@ -6,7 +7,7 @@ const App: React.FC = () => {
 
   return (
     <div style={{ paddingTop: 100, paddingInline: 20 }}>
-      <Field name="name">
+      <Field name="name" validator={validateName}>
         {({ value, fieldHandler }) => (
           <>
             <label>type</label>
