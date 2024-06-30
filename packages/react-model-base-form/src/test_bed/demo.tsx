@@ -1,6 +1,6 @@
 import { useFormOne } from './model_and_hook';
 import DUMMY_API from './api';
-import { validateName } from './validator';
+import { validateHobby, validateName } from './validator';
 
 const App: React.FC = () => {
   const { Field, controller } = useFormOne();
@@ -19,7 +19,7 @@ const App: React.FC = () => {
         </Field>
       </div>
       <div style={{ paddingTop: 20 }}>
-        <Field name="hobby">
+        <Field name="hobby" validator={validateHobby}>
           {({ value, error, fieldHandler }) => (
             <>
               <label>hobby</label>
@@ -44,8 +44,15 @@ const App: React.FC = () => {
   }
 
   function write() {
-    const result = controller.write();
-    console.log(result); // <--- u can use serialized data;
+    try {
+      const hasError = controller.validateAll();
+      if (hasError) throw new Error('please check invalid forms.')
+      const result = controller.write();
+      console.log(result); // <--- u can use serialized data;
+      window.confirm('success');
+    } catch (e) {
+      window.alert(e);
+    }
   }
 };
 

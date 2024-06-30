@@ -2,7 +2,7 @@ import { StoreApi, UseBoundStore } from 'zustand';
 
 import DecoratorUtils from './decorator/utils';
 import { MapperMetadata } from './decorator/mapper';
-import { BaseFormState, FieldValidator, FieldValidators } from './types';
+import { BaseFormState, FieldError, FieldValidator, FieldValidators } from './types';
 import deepmerge from 'deepmerge';
 import pick from 'lodash.pick';
 import isEqual from 'lodash.isequal';
@@ -21,6 +21,7 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     this.setValue = this.setValue.bind(this);
     this.setValues = this.setValues.bind(this);
     this.validate = this.validate.bind(this);
+    this.validateAll = this.validateAll.bind(this);
     this.undo = this.undo.bind(this);
 
     this.registerFieldValidator = this.registerFieldValidator.bind(this);
@@ -61,10 +62,21 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     fieldNames.forEach(this.validate);
   }
 
-  validate<TKey extends keyof TFormModel>(key: TKey) {
+  validate<TKey extends keyof TFormModel>(key: TKey): void {
     const validator = this.fieldValidators[key];
     const error = validator?.(this.model[key], this.model);
     this.storeCreator.setState((state) => ({ errors: { ...state.errors, [key]: error } }));
+  }
+
+  /** @returns {boolean} 에러 보유여부 */
+  validateAll(): boolean {
+    const keys = this.getFieldKeys();
+    const nextErrors = keys.reduce(
+      (acc, key) => ({ ...acc, [key]: this.fieldValidators[key]?.(this.model[key], this.model) }),
+      {} as Partial<Record<keyof TFormModel, FieldError>>,
+    );
+    this.storeCreator.setState(() => ({ errors: nextErrors }));
+    return Object.values(nextErrors).some(Boolean);
   }
 
   undo() {

@@ -5,3 +5,6 @@ export const validateName = (value: string) => {
 export const validateType = (value: string[]) => {
   if (!value.length) return '최소데이터하나를 선택하세요.';
 };
+export const validateHobby = (value: string) => {
+  if (!value) return '취미를 입력하세요.';
+};

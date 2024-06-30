@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@types/lodash.clone": "^4.5.9",
+    "@types/lodash.isempty": "^4.4.9",
     "@types/lodash.isequal": "^4.5.8",
     "@types/lodash.pick": "^4.4.9",
     "@types/lodash.setwith": "^4.3.9",
@@ -32,6 +33,7 @@
   "dependencies": {
     "deepmerge": "^4.3.1",
     "lodash.clone": "^4.5.0",
+    "lodash.isempty": "^4.4.0",
     "lodash.isequal": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "lodash.setwith": "^4.3.2",

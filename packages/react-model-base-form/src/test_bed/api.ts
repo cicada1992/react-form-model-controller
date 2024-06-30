@@ -8,6 +8,7 @@ const DUMMY_API = {
           res({
             name: 'initial name',
             types: 'a,b',
+            hobby: '',
           }),
         1000,
       ),
