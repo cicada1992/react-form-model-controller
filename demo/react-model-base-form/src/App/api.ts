@@ -7,7 +7,8 @@ const DUMMY_API = {
         () =>
           res({
             name: 'initial name',
-            types: 'a,b',
+            age: 30,
+            cities: 'seoul, daejeon, sejong',
           }),
         1000,
       ),

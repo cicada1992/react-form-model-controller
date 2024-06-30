@@ -47,7 +47,7 @@ const App: React.FC = () => {
   function write() {
     try {
       const hasError = controller.validateAll();
-      if (hasError) throw new Error('please check invalid forms.')
+      if (hasError) throw new Error('please check invalid forms.');
       const result = controller.write();
       console.log(result); // <--- u can use serialized data;
       window.confirm('success');

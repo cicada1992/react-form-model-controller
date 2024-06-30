@@ -1,68 +1,74 @@
-import { Button, Card, Checkbox, Input, Row, Switch } from 'antd';
+import { Button, Card, Flex, Input, InputNumber, Select, Space } from 'antd';
 import { useFormOne } from './model_and_hook';
 import DUMMY_API from './api';
-import { validateName, validateType } from './validator';
+import { validateAge, validateName, validateCities } from './validator';
+import { ModalUtils } from './ModalUtils';
 
 const App: React.FC = () => {
   const { Field, controller } = useFormOne();
 
   return (
-    <Card style={{ width: '100vw' }}>
-      <Row style={{ paddingTop: 20 }}>
-        <Field name="name" validator={validateName} validateOnMount>
+    <Flex align="center" justify="center" style={{ width: '100%', height: '100%' }}>
+      <Card
+        type="inner"
+        title="Form Test"
+        style={{ width: '50%' }}
+        actions={[
+          <Space>
+            <Button style={{ width: 150 }} onClick={read}>
+              fetch dummy data
+            </Button>
+            <Button style={{ width: 150 }} onClick={write}>
+              send writted data
+            </Button>
+            <Button style={{ width: 150 }} onClick={controller.undo}>
+              undo
+            </Button>
+            <Button style={{ width: 150 }} onClick={controller.reset}>
+              reset forms
+            </Button>
+          </Space>,
+        ]}
+      >
+        <Field name="name" validator={validateName}>
           {({ value, error, fieldHandler }) => (
-            <>
+            <Flex vertical style={{ paddingTop: 40, position: 'relative' }}>
               <label>name</label>
               <Input value={value} onChange={fieldHandler} />
-              {error && <div style={{ color: 'red' }}>{error}</div>}
-            </>
+              {error && <div style={{ color: 'red', position: 'absolute', top: 95 }}>{error}</div>}
+            </Flex>
           )}
         </Field>
-      </Row>
-      <div>
-        <Field name="type" validator={validateType} refValues={['hasType']}>
-          {({ value, error, values, fieldHandler, getFieldHandler }) => (
-            <>
-              <Row style={{ marginTop: 20 }}>
-                <label>selected type</label>
-                <Checkbox
-                  value="a"
-                  checked={value.includes('a')}
-                  onChange={(e) => {
-                    const nextValue = getNextTypes(value, e.target.value);
-                    fieldHandler(nextValue);
-                    getFieldHandler('hasType')(Boolean(nextValue.length));
-                  }}
-                >
-                  A
-                </Checkbox>
-                <Checkbox
-                  value="b"
-                  checked={value.includes('b')}
-                  onChange={(e) => {
-                    const nextValue = getNextTypes(value, e.target.value);
-                    fieldHandler(nextValue);
-                    getFieldHandler('hasType')(Boolean(nextValue.length));
-                  }}
-                >
-                  B
-                </Checkbox>
-              </Row>
-              {error && <div style={{ color: 'red' }}>{error}</div>}
-              <Row style={{ marginTop: 20 }}>
-                <label>Has Selected Type</label>
-                <Switch value={values.hasType} disabled />
-              </Row>
-            </>
+        <Field name="age" validator={validateAge}>
+          {({ value, error, fieldHandler }) => (
+            <Flex vertical style={{ paddingTop: 40, position: 'relative' }}>
+              <label>age</label>
+              <InputNumber min="0" max="150" value={value} onChange={fieldHandler} />
+              {error && <div style={{ color: 'red', position: 'absolute', top: 95 }}>{error}</div>}
+            </Flex>
           )}
         </Field>
-      </div>
-      <Row style={{ paddingTop: 40 }}>
-        <Button onClick={read}>Get Data</Button>
-        <Button onClick={write}>Send Data</Button>
-        <Button onClick={controller.undo}>undo</Button>
-      </Row>
-    </Card>
+        <Field name="cities" validator={validateCities}>
+          {({ value, error, fieldHandler }) => (
+            <Flex vertical style={{ paddingTop: 40, paddingBottom: 40, position: 'relative' }}>
+              <label>cities</label>
+              <Select
+                value={value}
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="select one country"
+                onChange={fieldHandler}
+                options={['seoul', 'daejeon', 'sejong'].map((nation) => ({
+                  label: nation,
+                  value: nation,
+                }))}
+              />
+              {error && <div style={{ color: 'red', position: 'absolute', top: 95 }}>{error}</div>}
+            </Flex>
+          )}
+        </Field>
+      </Card>
+    </Flex>
   );
 
   async function read() {
@@ -70,13 +76,17 @@ const App: React.FC = () => {
     controller.read(result);
   }
 
-  function write() {
-    const result = controller.write();
-    console.log(result); // <--- u can use serialized data;
-  }
-
-  function getNextTypes(types: string[], value: string) {
-    return types.includes(value) ? types.filter((type) => type !== value) : [...types, value];
+  async function write() {
+    try {
+      const hasError = controller.validateAll();
+      if (hasError) throw new Error('please check invalid forms.');
+      const result = controller.write();
+      console.log({ result }); // <--- u can use serialized data;
+      await ModalUtils.info('성공');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      await ModalUtils.error(e.message);
+    }
   }
 };
 

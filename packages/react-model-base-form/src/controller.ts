@@ -101,7 +101,7 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     fieldNames.forEach((fieldName) => {
       if (typeof fieldName !== 'string') return;
       const reader = serializeMetadata.getReader(fieldName);
-      if (reader) result = deepmerge(result, reader(data));
+      if (reader) result = { ...result, ...reader(data) };
     });
 
     this.setValues(result);

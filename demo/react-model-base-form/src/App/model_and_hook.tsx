@@ -2,13 +2,14 @@ import { BaseFormController, formHookCreator, Mapper } from 'react-model-base-fo
 
 export interface ReadResponse {
   name: string;
-  types: string;
+  age: number;
+  cities: string;
 }
 
 interface WriteResult {
   name: string;
-  types: string;
-  hasType: boolean;
+  age: number;
+  cities: string;
 }
 
 class FormOneModel {
@@ -16,12 +17,13 @@ class FormOneModel {
   @Mapper.Write<FormOneModel['name'], WriteResult>((v) => ({ name: `serialized!=${v}` }))
   name: string = '';
 
-  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ type: data.types.split(',') }))
-  @Mapper.Write<FormOneModel['type'], WriteResult>((v) => ({ types: v.join(',') }))
-  type: string[] = [];
+  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ age: String(data.age) }))
+  @Mapper.Write<FormOneModel['age'], WriteResult>((v) => ({ age: Number(v) }))
+  age: string = '';
 
-  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ hasType: Boolean(data.types.split(',').length) }))
-  hasType: boolean = false;
+  @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ cities: data.cities.split(',') }))
+  @Mapper.Write<FormOneModel['cities'], WriteResult>((v) => ({ cities: v.join(',') }))
+  cities: string[] = [];
 }
 
 class FormOneController extends BaseFormController<FormOneModel, WriteResult> {}

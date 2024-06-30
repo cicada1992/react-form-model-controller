@@ -70,8 +70,8 @@ const getFieldHandlers = <
     fieldHandler: (value) => controller.setValue(key, extractValueFrom(value)),
     getFieldHandler:
       <TKey extends keyof TFormController['model']>(input: TKey) =>
-        (value) =>
-          controller.setValue(input, extractValueFrom(value)),
+      (value) =>
+        controller.setValue(input, extractValueFrom(value)),
     getComplexFieldHandler: (path: string) => (value: unknown) => {
       const nextValues = setWith(clone(values as object), path, value, clone);
       controller.setValues(nextValues);
