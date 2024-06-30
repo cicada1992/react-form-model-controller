@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.tsx',
-      name: 'react-model-base-form',
+      name: 'react-meta-form',
       formats: ['es', 'cjs'],
       fileName: 'index.js',
     },

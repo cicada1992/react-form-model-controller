@@ -1,4 +1,4 @@
-import { BaseFormController, formHookCreator, Mapper } from 'react-model-base-form';
+import { BaseFormController, formHookCreator, Mapper } from 'react-meta-form';
 
 export interface ReadResponse {
   name: string;
@@ -26,7 +26,7 @@ class FormOneModel {
   cities: string[] = [];
 }
 
-class FormOneController extends BaseFormController<FormOneModel, WriteResult> {}
+class FormOneController extends BaseFormController<FormOneModel, WriteResult> { }
 
 export const useFormOne = formHookCreator({
   FormModel: FormOneModel,

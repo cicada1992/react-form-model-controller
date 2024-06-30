@@ -6,4 +6,4 @@
 
 ## Packages
 
-### 1. react-model-base-form
+### 1. react-meta-form

@@ -1,5 +1,5 @@
 {
-  "name": "@demo/react-model-base-form",
+  "name": "@demo/react-meta-form",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +14,7 @@
     "autobind-decorator": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-model-base-form": "*",
+    "react-meta-form": "*",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
