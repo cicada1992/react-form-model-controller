@@ -1,4 +1,3 @@
-// import isEqual from 'lodash.isequal';
 import { BaseFormController } from './controller';
 import { extractValueFrom } from './utils';
 import memoizeOne from 'memoize-one';
@@ -70,9 +69,9 @@ const getFieldHandlers = <
     fieldHandler: (value) => controller.setValue(key, extractValueFrom(value)),
     getFieldHandler:
       <TKey extends keyof TFormController['model']>(input: TKey) =>
-      (value) =>
-        controller.setValue(input, extractValueFrom(value)),
-    getComplexFieldHandler: (path: string) => (value: unknown) => {
+        (value) =>
+          controller.setValue(input, extractValueFrom(value)),
+    getComplexFieldHandler: (path) => (value) => {
       const nextValues = setWith(clone(values as object), path, value, clone);
       controller.setValues(nextValues);
     },

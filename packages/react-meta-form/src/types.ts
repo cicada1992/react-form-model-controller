@@ -26,11 +26,36 @@ export interface BaseFormState<TFormModel> {
   errors: Partial<Record<keyof TFormModel, FieldError>>;
 }
 
+type PrimitiveType = string | number | symbol | boolean | null | undefined;
+// eslint-disable-next-line @typescript-eslint/ban-types
+type LeafType = Function | any[] | PrimitiveType;
+
+type Dot<T extends string, U extends string> = '' extends U
+  ? T
+  : `${T}.${U}`;
+type PathsToFields<T, StopTypes = LeafType> = T extends LeafType
+  ? ''
+  : {
+    [K in Extract<keyof T, string>]: Dot<K, PathsToFields<T[K], StopTypes>>;
+  }[Extract<keyof T, string>];
+type GetPropertyType<T, K extends string> = K extends keyof T
+  ? T[K]
+  : K extends `${infer Property}.${infer SubField}`
+  ? Property extends keyof T
+  ? GetPropertyType<NonNullable<T[Property]>, SubField>
+  : never
+  : never;
+
+
 // FIELD COMPONENMT
 export interface FieldHanlders<TFormModel, TValue> {
   fieldHandler: (value: TValue | unknown) => void; // a value argument can be synthetic change event or like that. so i handle this util function in implementation.
   getFieldHandler: <TKey extends keyof TFormModel>(key: TKey) => (value: TFormModel[TKey] | unknown) => void; // a value argument can be synthetic change event or like that. so i handle this util function in implementation.
-  getComplexFieldHandler: (path: string) => (value: unknown) => void;
+  getComplexFieldHandler: <
+    T extends TFormModel,
+    P extends PathsToFields<T>,
+    V extends GetPropertyType<T, P>,
+  >(path: P) => (value: V) => void;
 }
 
 export interface FieldRenderProps<TFormModel, TValue> extends FieldHanlders<TFormModel, TValue> {
