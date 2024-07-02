@@ -12,7 +12,7 @@ const App: React.FC = () => {
       <Card
         type="inner"
         title="Form Test"
-        style={{ width: '80%' }}
+        style={{ width: 700 }}
         actions={[
           <Space>
             <Button style={{ width: 150 }} onClick={read}>
