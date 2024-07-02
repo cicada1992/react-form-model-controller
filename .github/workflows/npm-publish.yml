@@ -21,8 +21,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Run build
-        run: pnpm build
+        run: |
+          cd packages/react-form-model-controller
+          pnpm run build
       - name: Publish to npm
-        run: pnpm publish
+        run: |
+        cd packages/react-form-model-controller
+        pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
