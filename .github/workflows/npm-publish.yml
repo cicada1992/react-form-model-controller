@@ -23,10 +23,10 @@ jobs:
       - name: Run build
         run: |
           cd packages/react-form-model-controller
-          pnpm run build --no-git-checks
+          pnpm run build
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd packages/react-form-model-controller
-          pnpm publish --access public
+          pnpm publish --no-git-checks
