@@ -1,6 +1,6 @@
 {
   "name": "@hyj/react-formctl",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "publishConfig": {
     "access": "public"
