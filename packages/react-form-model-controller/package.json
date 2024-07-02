@@ -1,6 +1,6 @@
 {
-  "name": "react-form-model-controller",
-  "version": "0.0.1",
+  "name": "@package/react-form-model-controller",
+  "version": "0.0.2",
   "type": "module",
   "publishConfig": {
     "access": "public"
