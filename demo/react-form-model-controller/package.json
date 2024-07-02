@@ -14,7 +14,6 @@
     "autobind-decorator": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-form-model-controller": "^0.0.2",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

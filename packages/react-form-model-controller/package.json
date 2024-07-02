@@ -1,10 +1,11 @@
 {
-  "name": "@package/react-form-model-controller",
+  "name": "react-form-model-controller",
   "version": "0.0.2",
   "type": "module",
   "publishConfig": {
     "access": "public"
   },
+  "description": "Enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation.",
   "keywords": [
     "react",
     "form",

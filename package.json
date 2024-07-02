@@ -1,6 +1,6 @@
 {
   "name": "react-form-model-controller",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -24,9 +24,6 @@
   },
   "description": "Enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation.",
   "scripts": {
-    "start:demo:form": "pnpm -F '@demo/react-form-model-controller' dev",
-    "build:pack:form": "pnpm -F 'react-form-model-controller' build",
-    "publish:pack:form": "pnpm -F 'react-form-model-controller' publish --access=public",
     "flush": "sh flush.sh",
     "copy-readme": "sh copy-readme.sh",
     "prettier": "prettier --write '**/*.{ts,js,jsx,tsx}'"
