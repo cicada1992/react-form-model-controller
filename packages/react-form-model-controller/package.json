@@ -1,5 +1,5 @@
 {
-  "name": "@hyj/react-formctl",
+  "name": "react-form-model-controller",
   "version": "0.0.0",
   "type": "module",
   "publishConfig": {
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cicada1992/react-formctl.git"
+    "url": "git+https://github.com/cicada1992/react-form-model-controller.git"
   },
   "bugs": {
-    "url": "git+https://github.com/cicada1992/react-formctl.git/issues"
+    "url": "git+https://github.com/cicada1992/react-form-model-controller.git/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

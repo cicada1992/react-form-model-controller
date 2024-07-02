@@ -2,7 +2,7 @@
 
 # Define the source and destination paths
 SOURCE="README.md"
-DESTINATION="packages/react-formctl/README.md"
+DESTINATION="packages/react-form-model-controller/README.md"
 
 # Check if the source file exists
 if [ ! -f "$SOURCE" ]; then

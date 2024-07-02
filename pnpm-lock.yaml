@@ -15,11 +15,8 @@ importers:
         specifier: ^5.5.2
         version: 5.5.2
 
-  demo/react-formctl:
+  demo/react-form-model-controller:
     dependencies:
-      '@hyj/react-formctl':
-        specifier: workspace:*
-        version: link:../../packages/react-formctl
       antd:
         specifier: ^5.18.3
         version: 5.18.3(react-dom@18.3.1)(react@18.3.1)
@@ -32,6 +29,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-form-model-controller:
+        specifier: workspace:*
+        version: link:../../packages/react-form-model-controller
       zustand:
         specifier: ^4.5.4
         version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
@@ -67,7 +67,7 @@ importers:
         specifier: ^5.3.1
         version: 5.3.2
 
-  packages/react-formctl:
+  packages/react-form-model-controller:
     dependencies:
       deepmerge:
         specifier: ^4.3.1

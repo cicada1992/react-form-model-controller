@@ -1,4 +1,4 @@
-# @hyj/react-formctl
+# react-form-model-controller
 defined class model base react form system. (using decorator & reflect-matadata)
 
 ## Description
@@ -6,7 +6,7 @@ class properties is UI data that has metadata decorator. user can annotated your
 for now, basically mapper decorator(read, write) is provied for data serializaion and deserialization.
 thanks to mapper layer, eventhough server data format have been changing frequently, we can foucs on just data for UI.
 
-## Why use @hyj/react-formctl?
+## Why use react-form-model-controller?
 
 #### Fully Supported TypeScript
 - Our form system is built with full TypeScript support, ensuring that you can take full advantage of IDE assistance. This means better code completion, error detection, and overall productivity enhancements as you build your forms.
@@ -25,7 +25,7 @@ thanks to mapper layer, eventhough server data format have been changing frequen
 ## Getting Started
 1. Define model
     ```ts
-      import { BaseFormController, formHookCreator, Mapper } from 'react-formctl';
+      import { BaseFormController, formHookCreator, Mapper } from 'react-form-model-controller';
 
       interface ReadResponse {
         name: string;

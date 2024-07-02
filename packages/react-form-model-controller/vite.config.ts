@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.tsx',
-      name: 'react-formctl',
+      name: 'react-form-model-controller',
       formats: ['es', 'cjs'],
       fileName: 'index.js',
     },
