@@ -12,7 +12,7 @@ const App: React.FC = () => {
       <Card
         type="inner"
         title="Form Test"
-        style={{ width: '50%' }}
+        style={{ width: '80%' }}
         actions={[
           <Space>
             <Button style={{ width: 150 }} onClick={read}>
@@ -82,7 +82,7 @@ const App: React.FC = () => {
       if (hasError) throw new Error('please check invalid forms.');
       const result = controller.write();
       console.log({ result }); // <--- u can use serialized data;
-      await ModalUtils.info('성공');
+      await ModalUtils.info('success. plz check console.');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       await ModalUtils.error(e.message);

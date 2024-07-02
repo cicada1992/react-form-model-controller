@@ -1,10 +1,11 @@
 # react-form-model-controller
-defined class model base react form system. (using decorator & reflect-matadata)
+Boosts productivity through TypeScript IDE support, streamlines data serialization/deserialization and validation, and offers customizable UI with render props for seamless server communication. A class model-based React form system utilizing decorators and metadata reflection.
 
 ## Description
-class properties is UI data that has metadata decorator. user can annotated your own decorator.
-for now, basically mapper decorator(read, write) is provied for data serializaion and deserialization.
-thanks to mapper layer, eventhough server data format have been changing frequently, we can foucs on just data for UI.
+This form system enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation, and provides customizable UI with render props for seamless server communication.
+
+## Demo
+> https://cicada1992.github.io/react-form-model-controller/
 
 ## Why use react-form-model-controller?
 

@@ -18,4 +18,5 @@ export default defineConfig({
       },
     },
   },
+  base: '/react-form-model-controller/',
 });

@@ -1,21 +1,23 @@
 {
   "name": "@demo/react-form-model-controller",
   "private": true,
-  "version": "0.0.2",
-  "type": "module",
+  "description": "Demo for react-form-model-controller",
   "scripts": {
     "dev": "vite",
-    "prebuild": "cd .. & cd .. & cd/packages/react-form-model-controller build",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
+  "homepage": "https://cicada1992.github.io/react-form-model-controller/",
   "dependencies": {
     "antd": "^5.18.3",
     "autobind-decorator": "^2.4.0",
+    "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-form-model-controller": "0.0.2",
+    "react-form-model-controller": "workspace:^",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

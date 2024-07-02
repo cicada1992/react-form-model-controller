@@ -89,7 +89,6 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
 
   reset() {
     const initialState = this.storeCreator.getInitialState();
-    console.log({ initialState, aa: { ...initialState } });
     this.storeCreator.setState(() => initialState);
   }
 
