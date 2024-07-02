@@ -1,12 +1,28 @@
 {
   "name": "react-form-model-controller",
-  "version": "0.0.0",
-  "description": "A monorepo for my packages",
+  "version": "0.0.1",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "react",
+    "form",
+    "forms",
+    "validation",
+    "form-controll",
+    "form-controller"
+  ],
+  "author": "Youngjae Han <han6318@naver.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cicada1992/react-form-model-controller.git"
   },
-  "license": "ISC",
+  "bugs": {
+    "url": "git+https://github.com/cicada1992/react-form-model-controller.git/issues"
+  },
+  "description": "Enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation.",
   "scripts": {
     "start:demo:form": "pnpm -F '@demo/react-form-model-controller' dev",
     "build:pack:form": "pnpm -F 'react-form-model-controller' build",

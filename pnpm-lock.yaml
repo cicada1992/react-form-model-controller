@@ -30,8 +30,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-form-model-controller:
-        specifier: workspace:*
-        version: link:../../packages/react-form-model-controller
+        specifier: 0.0.0
+        version: 0.0.0
       zustand:
         specifier: ^4.5.4
         version: 4.5.4(@types/react@18.3.3)(react@18.3.1)
@@ -2697,6 +2697,10 @@ packages:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  /react-form-model-controller@0.0.0:
+    resolution: {integrity: sha512-ID6nvE15JRyHfi4SipdzlXOHrOqXkv7DbPPOMkWXCOlvwMKRk3i1eH+aU/GjkRpct3NDnLx39CZTaQkutzQ5ww==}
+    dev: false
 
   /react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}

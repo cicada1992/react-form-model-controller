@@ -2,7 +2,7 @@
 defined class model base react form system. (using decorator & reflect-matadata)
 
 ## Description
-class properties is UI data that has metadata decorator. user can annotated your own decorator.
+class properties is UI data that has metadata decorator. you can annotated your own decorator.
 for now, basically mapper decorator(read, write) is provied for data serializaion and deserialization.
 thanks to mapper layer, eventhough server data format have been changing frequently, we can foucs on just data for UI.
 
