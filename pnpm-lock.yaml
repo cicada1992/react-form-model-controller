@@ -17,6 +17,9 @@ importers:
 
   demo/react-formctl:
     dependencies:
+      '@hyj/react-formctl':
+        specifier: workspace:*
+        version: link:../../packages/react-formctl
       antd:
         specifier: ^5.18.3
         version: 5.18.3(react-dom@18.3.1)(react@18.3.1)
@@ -29,9 +32,6 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      react-formctl:
-        specifier: workspace:*
-        version: link:../../packages/react-formctl
       zustand:
         specifier: ^4.5.4
         version: 4.5.4(@types/react@18.3.3)(react@18.3.1)

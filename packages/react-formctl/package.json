@@ -1,7 +1,24 @@
 {
-  "name": "react-formctl",
+  "name": "@hyj/react-formctl",
   "version": "0.0.1",
   "type": "module",
+  "keywords": [
+    "react",
+    "form",
+    "forms",
+    "validation",
+    "form-controll",
+    "form-controller"
+  ],
+  "author": "Youngjae Han <han6318@naver.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cicada1992/react-formctl.git"
+  },
+  "bugs": {
+    "url": "git+https://github.com/cicada1992/react-formctl.git/issues"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
