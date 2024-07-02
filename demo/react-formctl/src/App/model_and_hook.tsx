@@ -1,4 +1,4 @@
-import { BaseFormController, formHookCreator, Mapper } from 'react-meta-form';
+import { BaseFormController, formHookCreator, Mapper } from 'react-formctl';
 
 export interface ReadResponse {
   name: string;

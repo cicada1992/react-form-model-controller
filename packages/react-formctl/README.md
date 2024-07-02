@@ -1,4 +1,4 @@
-# react-meta-form
+# react-formctl
 defined class model base react form system. (using decorator & reflect-matadata)
 
 ## Description
@@ -10,7 +10,7 @@ thanks to mapper layer, eventhough server data format have been changing frequen
 ## Getting Start
 1. Define model
     ```ts
-      import { BaseFormController, formHookCreator, Mapper } from 'react-meta-form';
+      import { BaseFormController, formHookCreator, Mapper } from 'react-formctl';
 
       interface ReadResponse {
         name: string;

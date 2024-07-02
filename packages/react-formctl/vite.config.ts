@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.tsx',
-      name: 'react-meta-form',
+      name: 'react-formctl',
       formats: ['es', 'cjs'],
       fileName: 'index.js',
     },

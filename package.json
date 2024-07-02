@@ -8,9 +8,9 @@
   },
   "license": "ISC",
   "scripts": {
-    "start:demo:form": "pnpm -F '@demo/react-meta-form' dev",
-    "build:pack:form": "pnpm -F 'react-meta-form' build",
-    "publish:pack:form": "pnpm -F 'react-meta-form' publish",
+    "start:demo:form": "pnpm -F '@demo/react-formctl' dev",
+    "build:pack:form": "pnpm -F 'react-formctl' build",
+    "publish:pack:form": "pnpm -F 'react-formctl' publish",
     "flush": "sh flush.sh",
     "prettier": "prettier --write '**/*.{ts,js,jsx,tsx}'"
   },
