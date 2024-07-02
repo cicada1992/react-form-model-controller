@@ -3,7 +3,7 @@ name: NPM Package
 on:
   pull_request:
     branches:
-    - main
+      - main
 
 jobs:
   publish-npm:
@@ -16,17 +16,17 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Install PNPM
         run: npm install -g pnpm
-      - name: Change to package directory
-        run: cd packages/react-form-model-controller
-      - name: Install dependencies
-        run: pnpm install
+      - name: Change to package directory and install dependencies
+        run: |
+          cd packages/react-form-model-controller
+          pnpm install
       - name: Run build
         run: |
           cd packages/react-form-model-controller
           pnpm run build
       - name: Publish to npm
-        run: |
-        cd packages/react-form-model-controller
-        pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/react-form-model-controller
+          pnpm publish --access public
