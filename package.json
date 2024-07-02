@@ -10,7 +10,7 @@
   "scripts": {
     "start:demo:form": "pnpm -F '@demo/react-formctl' dev",
     "build:pack:form": "pnpm -F '@hyj/react-formctl' build",
-    "publish:pack:form": "pnpm -F '@hyj/react-formctl' publish",
+    "publish:pack:form": "pnpm -F '@hyj/react-formctl' publish --access=public",
     "flush": "sh flush.sh",
     "copy-readme": "sh copy-readme.sh",
     "prettier": "prettier --write '**/*.{ts,js,jsx,tsx}'"
