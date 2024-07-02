@@ -3,7 +3,7 @@ name: Publish npm package
 on:
   push:
     branches:
-      - 'v*.*.*'
+      - main
 
 jobs:
   publish:
