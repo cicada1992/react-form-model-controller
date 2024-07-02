@@ -24,6 +24,7 @@
   },
   "description": "Enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation.",
   "scripts": {
+    "publish": "cd packages/react-form-model-controller && npm publish",
     "flush": "sh flush.sh",
     "copy-readme": "sh copy-readme.sh",
     "prettier": "prettier --write '**/*.{ts,js,jsx,tsx}'"
