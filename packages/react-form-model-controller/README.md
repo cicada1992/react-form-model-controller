@@ -39,39 +39,40 @@ This form system enhances productivity with TypeScript IDE support, simplifies d
 2. Use created hook in your component.
 ![basic-component](https://github.com/cicada1992/react-form-model-controller/raw/main/assets/component-basic.png)
 
-## Caveat
-- Check your codebase settings(env) for decorator syntax.
-
-## APIS
+## APIs
 ### Field Component Props
 
 | Target           | Description                                                                                       | Type                                      | Required  |
 |------------------|---------------------------------------------------------------------------------------------------|-------------------------------------------|-----------|
-| name             | Name of the field defined in the model                                                            | string                                    | required  |
-| refValues        | Fields that will trigger re-rendering and are included in the values                              | Array<keyof TFormModel>                   | optional  |
-| validator        | Function to validate the field                                                                    | (value: T) => string \| null \| undefined | optional  |
-| validateOnMount  | Whether to validate the field when it is mounted                                                  | boolean                                   | optional  |
+| name             | Name of the field defined in the model                                                            | `string `                                   | required  |
+| refValues        | Fields that will trigger re-rendering and are included in the values                              | `Array<keyof TFormModel>  `                 | optional  |
+| validator        | Function to validate the field                                                                    | `(value: T) => string \| null \| undefined` | optional  |
+| validateOnMount  | Whether to validate the field when it is mounted                                                  | `boolean`                              | optional  |
 
 ### Field Component Children Arguments (Render-Props Arguments)
 
 | Target                 | Description                                                                                         | Type                                                   |
 |------------------------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| value                  | Value of the field                                                                                  | TValue                                                 |
-| values                 | Values of the fields passed in refValues                 | Partial<TFormModel>                                    |
-| error                  | Error message                                                                                       | string \| undefined \| null                            |
-| fieldHandler           | Handler for the field corresponding to the Field component                                          | (TValue) => void                                       |
-| getFieldHandler        | Getter for a specific field handler                                                                 | (key: TKey, value: TFormModel[TKey]) => void           |
-| getComplexFieldHandler | Getter for a handler used in complex field settings                                                 | (key: TKey, path: string (inferred by TypeScript), value: TValue) => void |
+| value                  | Value of the field                                                                                  | `TValue`                                                 |
+| values                 | Values of the fields passed in refValues                 | `Partial<TFormModel>`                                    |
+| error                  | Error message                                                                                       | `string \| undefined \| null`                          |
+| fieldHandler           | Handler for the field corresponding to the Field component                                          | `(TValue) => void`                                       |
+| getFieldHandler        | Getter for a specific field handler                                                                 | `(key: TKey, value: TFormModel[TKey]) => void`           |
+| getComplexFieldHandler | Getter for a handler used in complex field settings                                                 | `(key: TKey, path: string (inferred by TypeScript), value: TValue) => void` |
 
 ### Controller
 
 | Target        | Description                                                                                      | Type                                                     |
 |---------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| setValue      | Update the value of a specific field                                                             | (key: TKey, value: TFormModel[TKey]) => void             |
-| setValues     | Update the entire model                                                                          | (values: TFormModel) => void                             |
-| validate      | Validate a specific field                                                                        | (key: TKey) => boolean                                   |
-| validateAll   | Validate all fields                                                                              | (key: TKey, value: TFormModel[TKey]) => boolean          |
-| undo          | Undo the update (experimental)                                                                   | () => void                                               |
-| reset         | Reset the form                                                                                   | () => void                                               |
-| read          | Fetch data from the server, convert to the model, and set the form                               | (read: DataResponse) => void                             |
-| write         | Convert model data to the interface expected by the server                                       | () => WriteResult(server expected data)                  |
+| setValue      | Update the value of a specific field                                                             | `(key: TKey, value: TFormModel[TKey]) => void`             |
+| setValues     | Update the entire model                                                                          | `(values: TFormModel) => void`                             |
+| validate      | Validate a specific field                                                                        | `(key: TKey) => boolean`                                   |
+| validateAll   | Validate all fields                                                                              | `(key: TKey, value: TFormModel[TKey]) => boolean`          |
+| undo          | Undo the form update (experimental)                                                                   | `() => void`                                               |
+| reset         | Reset the form                                                                                   | `() => void`                                               |
+| read          | Fetch data from the server, convert to the model, and set the form                               | `(data: DataResponse) => void`                             |
+| write         | Convert model data to the interface expected by the server                                       | `() => WriteResult(server expected data)`                  |
+
+
+## Caveat
+- Check your codebase settings(env) for decorator syntax.
