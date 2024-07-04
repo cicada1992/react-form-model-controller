@@ -5,8 +5,8 @@ export const validateName = (value: string) => {
 
 export const validateAge = (value: string) => {
   if (!value) return 'Please enter your age.';
-  if (Number(value) < 20) return 'Teenager is prohibited.';
+  if (Number(value) < 10) return 'Should be bigger than 10';
 };
 export const validateCities = (value: string[]) => {
-  if (!value.length) return 'Please select at least one city.';
+  if (!value.length) return 'Should select city..';
 };

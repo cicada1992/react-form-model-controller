@@ -64,10 +64,11 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     fieldNames.forEach(this.validate);
   }
 
-  validate<TKey extends keyof TFormModel>(key: TKey): void {
+  validate<TKey extends keyof TFormModel>(key: TKey): boolean {
     const validator = this.fieldValidators[key];
     const error = validator?.(this.model[key], this.model);
     this.storeCreator.setState((state) => ({ errors: { ...state.errors, [key]: error } }));
+    return Boolean(error)
   }
 
   /** @returns {boolean} 에러 보유여부 */

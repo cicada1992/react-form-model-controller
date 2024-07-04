@@ -5,161 +5,73 @@ Boosts productivity through TypeScript IDE support, streamlines data serializati
 This form system enhances productivity with TypeScript IDE support, simplifies data serialization/deserialization and validation, and provides customizable UI with render props for seamless server communication.
 
 ## Demo
-> https://cicada1992.github.io/react-form-model-controller/
+- https://cicada1992.github.io/react-form-model-controller/
 
-## Why use react-form-model-controller?
+
+## Get Started
+- `npm install react-form-model-controller`
+- `yarn add react-form-model-controller`
+- `pnpm add react-form-model-controller`
+
+## Features
 
 #### Fully Supported TypeScript
 - Our form system is built with full TypeScript support, ensuring that you can take full advantage of IDE assistance. This means better code completion, error detection, and overall productivity enhancements as you build your forms.
+![IDE-support](../../assets/IDE_support.gif)
 
-#### Seamless Server Communication
+#### Frees you from dealing with server-side data interface changes
 - Say goodbye to the headaches of data serialization and deserialization. With our Mapper decorators, you can separate concerns between UI and server data handling. This allows you to focus solely on the UI, making your code more maintainable and adaptable to server changes without any hassle
 - Has mapper layer for data serialization/deserialization. just annotated @Mapper.Read / @Mapper.Write.
+![model-class](../../assets/model-basic.png)
 
 #### Built-in Validation
 - Form validation is a critical aspect of any form management system. Our library comes with built-in validation support, ensuring your forms handle user input correctly and efficiently. You can define your validation logic and put it in to Field componet validator prop.
+![validation](../../assets/validation.png)
 
 #### Customizable UI with Render Props
 - Flexibility is at the core of our system. Using the render props pattern, you can tailor the UI to meet your specific needs. Whether you need a simple form or a complex, highly customized interface, our system provides the tools to make it happen.
 
+## Basic Usage
+1. Define model and create hook.
+![basic-model](../../assets/model-basic.png)
 
-## Getting Started
-1. Define model
-    ```ts
-      import { BaseFormController, formHookCreator, Mapper } from 'react-form-model-controller';
 
-      interface ReadResponse {
-        name: string;
-        age: number;
-        cities: string;
-      }
+2. Use created hook in your component.
+![basic-component](../../assets/component-basic.png)
 
-      interface WriteResult {
-        name: string;
-        age: number;
-        cities: string;
-      }
+## Caveat
+- Check your codebase settings(env) for decorator syntax.
 
-      class FormOneModel {
-        @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ name: data.name }))
-        @Mapper.Write<FormOneModel['name'], WriteResult>((v) => ({ name: `serialized!=${v}` }))
-        name: string = '';
+## APIS
+### Field Component Props
 
-        @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ age: String(data.age) }))
-        @Mapper.Write<FormOneModel['age'], WriteResult>((v) => ({ age: Number(v) }))
-        age: string = '';
+| Target           | Description                                                                                       | Type                                      | Required  |
+|------------------|---------------------------------------------------------------------------------------------------|-------------------------------------------|-----------|
+| name             | Name of the field defined in the model                                                            | string                                    | required  |
+| refValues        | Fields that will trigger re-rendering and are included in the values                              | Array<keyof TFormModel>                   | optional  |
+| validator        | Function to validate the field                                                                    | (value: T) => string \| null \| undefined | optional  |
+| validateOnMount  | Whether to validate the field when it is mounted                                                  | boolean                                   | optional  |
 
-        @Mapper.Read<ReadResponse, FormOneModel>((data) => ({ cities: data.cities.split(',') }))
-        @Mapper.Write<FormOneModel['cities'], WriteResult>((v) => ({ cities: v.join(',') }))
-        cities: string[] = [];
-      }
+### Field Component Children Arguments (Render-Props Arguments)
 
-      class FormOneController extends BaseFormController<FormOneModel, WriteResult> { }
+| Target                 | Description                                                                                         | Type                                                   |
+|------------------------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| value                  | Value of the field                                                                                  | TValue                                                 |
+| values                 | Values of the fields passed in refValues                 | Partial<TFormModel>                                    |
+| error                  | Error message                                                                                       | string \| undefined \| null                            |
+| fieldHandler           | Handler for the field corresponding to the Field component                                          | (TValue) => void                                       |
+| getFieldHandler        | Getter for a specific field handler                                                                 | (key: TKey, value: TFormModel[TKey]) => void           |
+| getComplexFieldHandler | Getter for a handler used in complex field settings                                                 | (key: TKey, path: string (inferred by TypeScript), value: TValue) => void |
 
-      export const useFormOne = formHookCreator({
-        FormModel: FormOneModel,
-        FormController: FormOneController,
-      });
-    ```
+### Controller
 
-2. Use hook in component.
-    ```tsx
-    const App: React.FC = () => {
-    const { Field, controller } = useFormOne();
-
-      return (
-        <Flex align="center" justify="center">
-          <Card
-            actions={[
-              <Space>
-                <Button onClick={fetch}>
-                  fetch dummy data
-                </Button>
-                <Button onClick={send}>
-                  send writted data
-                </Button>
-                <Button onClick={controller.undo}>
-                  undo
-                </Button>
-                <Button onClick={controller.reset}>
-                  reset forms
-                </Button>
-              </Space>,
-            ]}
-          >
-            <Field name="name" validator={validateName}>
-              {({ value, error, fieldHandler }) => (
-                <Flex>
-                  <label>name</label>
-                  <Input value={value} onChange={fieldHandler} />
-                  {error && <div>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-            <Field name="age" validator={validateAge}>
-              {({ value, error, fieldHandler }) => (
-                <Flex>
-                  <label>age</label>
-                  <InputNumber min="0" max="150" value={value} onChange={fieldHandler} />
-                  {error && <div>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-            <Field name="cities" validator={validateCities}>
-              {({ value, error, fieldHandler }) => (
-                <Flex>
-                  <label>cities</label>
-                  <Select
-                    value={value}
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder="select one country"
-                    onChange={fieldHandler}
-                    options={['seoul', 'daejeon', 'sejong'].map((nation) => ({
-                      label: nation,
-                      value: nation,
-                    }))}
-                  />
-                  {error && <div>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-          </Card>
-        </Flex>
-      );
-
-      async function fetch() {
-        const data = await DUMMY_API.getData();
-        const transformed = controller.read(data);
-        console.log(transformed); //  // transformed to model class by @Mapper.Reader
-      }
-
-      async function send() {
-        try {
-          const hasError = controller.validateAll();
-          if (hasError) throw new Error('please check invalid forms.');
-          const result = controller.write();
-          console.log(result); // <--- u can use serialized data;
-          await ModalUtils.info('성공');
-        } catch (e: any) {
-          await ModalUtils.error(e.message);
-        }
-      }
-
-      function validateName = (value: string) => {
-            if (!value) return 'Please enter your name.';
-            if (value.includes('e')) return "The letter 'e' cannot be included";
-      };
-
-      function validateAge = (value: string) => {
-            if (!value) return 'Please enter your age.';
-            if (Number(value) < 20) return 'Teenager is prohibited.';
-      };
-       
-      function validateCities = (value: string[]) => {
-            if (!value.length) return 'Please select at least one city.';
-      };  
-   };
-
-    export default App;
-    ```
+| Target        | Description                                                                                      | Type                                                     |
+|---------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------|
+| setValue      | Update the value of a specific field                                                             | (key: TKey, value: TFormModel[TKey]) => void             |
+| setValues     | Update the entire model                                                                          | (values: TFormModel) => void                             |
+| validate      | Validate a specific field                                                                        | (key: TKey) => boolean                                   |
+| validateAll   | Validate all fields                                                                              | (key: TKey, value: TFormModel[TKey]) => boolean          |
+| undo          | Undo the update (experimental)                                                                   | () => void                                               |
+| reset         | Reset the form                                                                                   | () => void                                               |
+| read          | Fetch data from the server, convert to the model, and set the form                               | (read: DataResponse) => void                             |
+| write         | Convert model data to the interface expected by the server                                       | () => WriteResult(server expected data)                  |

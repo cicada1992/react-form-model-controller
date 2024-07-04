@@ -10,7 +10,7 @@ const DUMMY_API = {
             age: 30,
             cities: 'seoul, daejeon, sejong',
           }),
-        1000,
+        10,
       ),
     );
   },
