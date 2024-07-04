@@ -17,7 +17,7 @@ This form system enhances productivity with TypeScript IDE support, simplifies d
 
 #### Fully Supported TypeScript
 - Our form system is built with full TypeScript support, ensuring that you can take full advantage of IDE assistance. This means better code completion, error detection, and overall productivity enhancements as you build your forms.
-![IDE-support](../../assets/IDE_support.gif){ width=100% }
+> ![IDE-support](../../assets/IDE_support.gif)
 
 #### Frees you from dealing with server-side data interface changes
 - Say goodbye to the headaches of data serialization and deserialization. With our Mapper decorators, you can separate concerns between UI and server data handling. This allows you to focus solely on the UI, making your code more maintainable and adaptable to server changes without any hassle
