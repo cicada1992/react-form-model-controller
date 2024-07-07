@@ -19,6 +19,10 @@ export type FieldValidator<TFormModel, TKey extends keyof TFormModel> = (
 export type FieldValidators<TFormModel, TKey extends keyof TFormModel> = {
   [p in TKey]?: FieldValidator<TFormModel, TKey>;
 };
+export type ControllerOptions = Partial<{
+  replace: boolean;
+  preventValidation: boolean;
+}>;
 
 // STORE
 export interface BaseFormState<TFormModel> {
@@ -30,9 +34,7 @@ type PrimitiveType = string | number | symbol | boolean | null | undefined;
 // eslint-disable-next-line @typescript-eslint/ban-types
 type LeafType = Function | any[] | PrimitiveType;
 
-type Dot<T extends string, U extends string> = '' extends U
-  ? T
-  : `${T}.${U}`;
+type Dot<T extends string, U extends string> = '' extends U ? T : `${T}.${U}`;
 type PathsToFields<T, StopTypes = LeafType> = T extends LeafType
   ? ''
   : {
@@ -46,16 +48,13 @@ type GetPropertyType<T, K extends string> = K extends keyof T
   : never
   : never;
 
-
 // FIELD COMPONENMT
 export interface FieldHanlders<TFormModel, TValue> {
   fieldHandler: (value: TValue | unknown) => void; // a value argument can be synthetic change event or like that. so i handle this util function in implementation.
   getFieldHandler: <TKey extends keyof TFormModel>(key: TKey) => (value: TFormModel[TKey] | unknown) => void; // a value argument can be synthetic change event or like that. so i handle this util function in implementation.
-  getComplexFieldHandler: <
-    T extends TFormModel,
-    P extends PathsToFields<T>,
-    V extends GetPropertyType<T, P>,
-  >(path: P) => (value: V) => void;
+  getComplexFieldHandler: <T extends TFormModel, P extends PathsToFields<T>, V extends GetPropertyType<T, P>>(
+    path: P,
+  ) => (value: V) => void;
 }
 
 export interface FieldRenderProps<TFormModel, TValue> extends FieldHanlders<TFormModel, TValue> {

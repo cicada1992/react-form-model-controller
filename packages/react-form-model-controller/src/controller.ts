@@ -2,14 +2,14 @@ import { StoreApi, UseBoundStore } from 'zustand';
 
 import DecoratorUtils from './decorator/utils';
 import { MapperMetadata } from './decorator/mapper';
-import { BaseFormState, FieldError, FieldValidator, FieldValidators } from './types';
+import { BaseFormState, ControllerOptions, FieldError, FieldValidator, FieldValidators } from './types';
 import deepmerge from 'deepmerge';
 import pick from 'lodash.pick';
 import isEqual from 'lodash.isequal';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class BaseFormController<TFormModel, TWriteResult = any> {
-  private readonly snapshots: TFormModel[] = [];
+  private readonly snapshots: BaseFormState<TFormModel>[] = [];
   private readonly fieldValidators: FieldValidators<TFormModel, keyof TFormModel> = {};
 
   constructor(
@@ -51,24 +51,42 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     return this.storeCreator.getState().values;
   }
 
-  setValue<TKey extends keyof TFormModel>(key: TKey, value: TFormModel[TKey]) {
-    const snapshot = this.takeModelSnapshot();
+  setValue<TKey extends keyof TFormModel>(
+    key: TKey,
+    value: TFormModel[TKey],
+    options: Omit<ControllerOptions, 'replace'> = {},
+  ) {
+    const snapshot = this.takeSnapshot();
     this.snapshots.push(snapshot);
     this.storeCreator.setState((state) => ({ values: { ...state.values, [key]: value } }));
-    this.validate(key);
+    if (!options.preventValidation) this.validate(key);
   }
 
-  setValues(newValues: TFormModel) {
-    this.storeCreator.setState((state) => ({ values: { ...state.values, ...newValues } }));
-    const fieldNames = this.getFieldKeys();
-    fieldNames.forEach(this.validate);
+  setValues(newValues: TFormModel, options: ControllerOptions = {}) {
+    this.storeCreator.setState((state) => ({
+      values: options.replace ? newValues : { ...state.values, ...newValues },
+    }));
+
+    if (!options.preventValidation) {
+      const fieldNames = this.getFieldKeys();
+      fieldNames.forEach(this.validate);
+    }
+  }
+
+  setErrors(
+    newErrors: BaseFormState<TFormModel>['errors'],
+    options: Omit<ControllerOptions, 'preventValidation'> = {},
+  ) {
+    this.storeCreator.setState((state) => ({
+      errors: options.replace ? newErrors : { ...state.errors, ...newErrors },
+    }));
   }
 
   validate<TKey extends keyof TFormModel>(key: TKey): boolean {
     const validator = this.fieldValidators[key];
     const error = validator?.(this.model[key], this.model);
     this.storeCreator.setState((state) => ({ errors: { ...state.errors, [key]: error } }));
-    return Boolean(error)
+    return Boolean(error);
   }
 
   /** @returns {boolean} 에러 보유여부 */
@@ -85,7 +103,8 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
   undo() {
     const target = this.snapshots.pop();
     if (!target) return;
-    this.setValues(target);
+    this.setValues(target.values, { preventValidation: true, replace: true });
+    this.setErrors(target.errors, { replace: true });
   }
 
   reset() {
@@ -94,7 +113,10 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
   }
 
   /** from server */
-  read<TDataResponse>(data: TDataResponse extends object ? TDataResponse : never): void {
+  read<TDataResponse>(
+    data: TDataResponse extends object ? TDataResponse : never,
+    options: ControllerOptions = {},
+  ): void {
     let result = JSON.parse(JSON.stringify(this.model)) as TFormModel;
     const serializeMetadata = DecoratorUtils.getOrCreateClassMetadata(this.ModelClass, MapperMetadata);
     const fieldNames = this.getFieldKeys();
@@ -104,7 +126,7 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
       if (reader) result = { ...result, ...reader(data) };
     });
 
-    this.setValues(result);
+    this.setValues(result, options);
   }
 
   /** to server */
@@ -149,7 +171,14 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     return Object.getOwnPropertyNames(this.model) as TKey[];
   }
 
-  private takeModelSnapshot() {
-    return JSON.parse(JSON.stringify(this.model));
+  private takeSnapshot(): BaseFormState<TFormModel> {
+    return {
+      values: this.deepClone(this.model),
+      errors: this.deepClone(this.storeCreator.getState().errors),
+    };
+  }
+
+  private deepClone<T>(target: T): T {
+    return JSON.parse(JSON.stringify(target));
   }
 }
