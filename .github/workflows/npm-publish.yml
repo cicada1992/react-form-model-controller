@@ -4,9 +4,12 @@ on:
   pull_request:
     branches:
       - main
+    types: 
+      - closed  # PR이 병합될 때만 실행되도록 설정
 
 jobs:
   publish-npm:
+    if: github.event.pull_request.merged == true  # PR이 병합되었을 때만 실행
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
