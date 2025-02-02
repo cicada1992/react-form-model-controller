@@ -6,6 +6,7 @@ import { BaseFormState, ControllerOptions, FieldError, FieldValidator, FieldVali
 import deepmerge from 'deepmerge';
 import pick from 'lodash.pick';
 import isEqual from 'lodash.isequal';
+import { diff } from 'deep-object-diff';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class BaseFormController<TFormModel, TWriteResult = any> {
@@ -23,6 +24,7 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
     this.validateAll = this.validateAll.bind(this);
     this.undo = this.undo.bind(this);
     this.reset = this.reset.bind(this);
+    this.subscribe = this.subscribe.bind(this);
 
     // HELPER
     this.registerFieldValidator = this.registerFieldValidator.bind(this);
@@ -110,6 +112,18 @@ export abstract class BaseFormController<TFormModel, TWriteResult = any> {
   reset() {
     const initialState = this.storeCreator.getInitialState();
     this.storeCreator.setState(() => initialState);
+  }
+
+  subscribe<TKey extends keyof TFormModel>(
+    keys: TKey[],
+    listener: (values: Pick<NonNullable<TFormModel>, TKey>) => void
+  ): () => void {
+    return this.storeCreator.subscribe((state, prevState) => {
+      const { values } = diff(prevState, state) as BaseFormState<TFormModel>;
+      if (!values) return;
+      const picked = pick(values, keys);
+      listener(picked)
+    })
   }
 
   /** from server */
