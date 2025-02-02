@@ -3,6 +3,7 @@ import { useFormOne } from './model_and_hook';
 import DUMMY_API from './api';
 import { validateAge, validateName, validateCities } from './validator';
 import { ModalUtils } from './ModalUtils';
+import NameFixer from './NameFixer';
 
 interface DemoAction {
   name: string;
@@ -56,57 +57,60 @@ const App: React.FC = () => {
   ];
 
   return (
-    <Flex align="center" justify="center" style={{ width: '100%', minWidth: 1300, height: '100%' }} gap={16}>
-      <Flex vertical align="center" justify="center" gap={8} style={{ minWidth: 600, width: 600, marginTop: 38, }}>
-        <Card type="inner" title="Forms" style={{ width: '100%' }}>
-          <Flex vertical gap={30}>
-            <Field name="name" validator={validateName}>
-              {({ value, error, fieldHandler }) => (
-                <Flex vertical style={{ position: 'relative' }}>
-                  <label>name</label>
-                  <Input value={value} onChange={fieldHandler} />
-                  {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-            <Field name="age" validator={validateAge}>
-              {({ value, error, fieldHandler }) => (
-                <Flex vertical style={{ position: 'relative' }}>
-                  <label>age</label>
-                  <Input value={value} onChange={fieldHandler} />
-                  {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-            <Field name="cities" validator={validateCities}>
-              {({ value, error, fieldHandler }) => (
-                <Flex vertical style={{ position: 'relative', paddingBottom: 20 }}>
-                  <label>cities</label>
-                  <Select
-                    value={value}
-                    mode="multiple"
-                    style={{ width: '100%' }}
-                    placeholder="select one country"
-                    onChange={fieldHandler}
-                    options={['seoul', 'daejeon', 'sejong'].map((nation) => ({
-                      label: nation,
-                      value: nation,
-                    }))}
-                  />
-                  {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
-                </Flex>
-              )}
-            </Field>
-          </Flex>
-        </Card>
-        <Table columns={columns} dataSource={data} pagination={false} rowKey={(a) => a.name} />;
+    <>
+      <NameFixer />
+      <Flex align="center" justify="center" style={{ width: '100%', minWidth: 1300, height: '100%' }} gap={16}>
+        <Flex vertical align="center" justify="center" gap={8} style={{ minWidth: 600, width: 600, marginTop: 38, }}>
+          <Card type="inner" title="Forms" style={{ width: '100%' }}>
+            <Flex vertical gap={30}>
+              <Field name="name" validator={validateName}>
+                {({ value, error, fieldHandler }) => (
+                  <Flex vertical style={{ position: 'relative' }}>
+                    <label>name</label>
+                    <Input value={value} onChange={fieldHandler} />
+                    {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
+                  </Flex>
+                )}
+              </Field>
+              <Field name="age" validator={validateAge}>
+                {({ value, error, fieldHandler }) => (
+                  <Flex vertical style={{ position: 'relative' }}>
+                    <label>age</label>
+                    <Input value={value} onChange={fieldHandler} />
+                    {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
+                  </Flex>
+                )}
+              </Field>
+              <Field name="cities" validator={validateCities}>
+                {({ value, error, fieldHandler }) => (
+                  <Flex vertical style={{ position: 'relative', paddingBottom: 20 }}>
+                    <label>cities</label>
+                    <Select
+                      value={value}
+                      mode="multiple"
+                      style={{ width: '100%' }}
+                      placeholder="select one country"
+                      onChange={fieldHandler}
+                      options={['seoul', 'daejeon', 'sejong'].map((nation) => ({
+                        label: nation,
+                        value: nation,
+                      }))}
+                    />
+                    {error && <div style={{ color: 'red', position: 'absolute', top: 55 }}>{error}</div>}
+                  </Flex>
+                )}
+              </Field>
+            </Flex>
+          </Card>
+          <Table columns={columns} dataSource={data} pagination={false} rowKey={(a) => a.name} />;
+        </Flex>
+        <Image
+          src="https://github.com/cicada1992/react-form-model-controller/raw/main/assets/model-basic.png"
+          style={{ minWidth: 650 }}
+          height={750}
+        />
       </Flex>
-      <Image
-        src="https://github.com/cicada1992/react-form-model-controller/raw/main/assets/model-basic.png"
-        style={{ minWidth: 650 }}
-        height={750}
-      />
-    </Flex>
+    </>
   );
 
   async function read() {

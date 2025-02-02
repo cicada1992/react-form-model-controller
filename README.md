@@ -65,13 +65,14 @@ This form system enhances productivity with TypeScript IDE support, simplifies d
 
 ### Controller
 
-| Target        | Description                                                                                      | Type                                                     |
-|---------------|--------------------------------------------------------------------------------------------------|----------------------------------------------------------|
-| setValue      | Update the value of a specific field                                                             | `(key: TKey, value: TFormModel[TKey]) => void`             |
-| setValues     | Update the entire model                                                                          | `(values: TFormModel) => void`                             |
-| validate      | Validate a specific field                                                                        | `(key: TKey) => boolean`                                   |
-| validateAll   | Validate all fields                                                                              | `(key: TKey, value: TFormModel[TKey]) => boolean`          |
-| undo          | Undo the update (experimental)                                                                   | `() => void`                                               |
-| reset         | Reset the form                                                                                   | `() => void`                                               |
-| read          | Fetch data from the server, convert to the model, and set the form                               | `(data: DataResponse) => void`                             |
-| write         | Convert model data to the interface expected by the server                                       | `() => WriteResult(server expected data)`                  |
+| Target        | Description                            | Type                                                     |
+|---------------|----------------------------------------|----------------------------------------------------------|
+| setValue      | Updates the value of a specific field  | `(key: TKey, value: TFormModel[TKey]) => void`  |
+| setValues     | Updates the entire form model    | `(values: TFormModel) => void` |
+| validate      | Validates a specific field       | `(key: TKey) => boolean` |
+| validateAll   | Validates all fields             | `(key: TKey, value: TFormModel[TKey]) => boolean` |
+| undo          | Undoes the last update (experimental)  | `() => void` |
+| reset         | Resets the form to its initial state   | `() => void` |
+| subscribe     | Subscribes to changes in specific form values. Listens for changes in the specified keys and triggers the provided callback function when those values change.  | `(keys: TKey[], listener: (values: Pick<NonNullable<TFormModel>, TKey>) => void`  |
+| read          | Fetches data from the server, converts it to the model format, and sets the form   | `(data: DataResponse) => void` |
+| write         | Converts model data to the format expected by the server   | `() => WriteResult(server expected data)`  |
